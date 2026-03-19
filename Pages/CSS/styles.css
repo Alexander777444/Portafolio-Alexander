@@ -1,46 +1,817 @@
-body{
-    margin: 0;
-    padding: 0;
-    background:linear-gradient(#000,#900,#f00);
+
+ 
+/* ════════════════════════════════════════════════════ VARIABLES GLOBALES════════════════════════════════════════════════════ */
+ 
+                    
+:root {
+  /* Colores de fondo */
+  --fondo:          #080808;   /* fondo principal: negro casi puro       */
+  --fondo-alt:      #0f0f0f;   /* fondo alterno: un tono más claro       */
+  --superficie:     #151515;   /* fondo de cards y contenedores          */
+  --borde:          #1e1e1e;   /* color de bordes sutiles                */
+
+  /* Colores de acento (rojo) */
+  --acento:         #cc0000;   /* rojo principal del proyecto            */
+  --acento-oscuro:  #900000;   /* rojo más oscuro para hover/bordes      */
+  --acento-brillo:  #2b0000;   /* rojo muy oscuro, semi-transparente     */
+
+
+  /* Colores de texto */
+  --texto:          #e8e8e8;   /* texto principal: blanco suave          */
+  --texto-apagado:  #888888;   /* texto secundario: gris medio           */
+  --texto-tenue:    #555555;   /* texto casi invisible: gris oscuro      */
+
+  /* Tipografías */
+  --fuente-mono: 'Space Mono', monospace;  /* para títulos y código      */
+  --fuente-sans: 'DM Sans', sans-serif;    /* para texto de cuerpo       */
+
+  /* Otros */
+  --radio:       10px;         /* redondeo de esquinas en cards/botones  */
+  --alto-nav:    64px;         /* altura fija de la barra de navegación  */
+  --transicion:  0.25s ease;   /* velocidad de todas las animaciones     */
 }
 
-nav{
-    display: flex;
-    margin: 0.5em;
-    color: #fff;
-    align-items:flex-start;
+
+/* ════════════════════════════════════════════════════
+   RESET Y BASE
+   ─────────────────────────────────────────────────────
+   Elimina márgenes/rellenos por defecto del navegador
+   y establece comportamiento base para todos los elementos.
+════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;  /* el padding NO suma al ancho total */
+  margin: 0;
+  padding: 0;
 }
 
-.LogoFront{
-    padding: 5px;
-    margin-left: 5em;
-    margin-top: 0;
+html {
+  scroll-behavior: smooth; /* scroll suave al hacer clic en links de navegación */
 }
 
-.listaNav{
-    display: flex;
-    column-gap: 10em;
-    margin-left: 5em;
-    
+body {
+  background: #080808;
+  color: #e8e8e8;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden; /* evita scroll horizontal */
+}
 
+img   { max-width: 100%; display: block; }
+a     { color: inherit; text-decoration: none; }
+ul    { list-style: none; }
+
+
+/* ════════════════════════════════════════════════════
+   BARRA DE SCROLL PERSONALIZADA
+   ─────────────────────────────────────────────────────
+   ::-webkit-scrollbar      → ancho de la barra
+   ::-webkit-scrollbar-track → el "riel" de fondo
+   ::-webkit-scrollbar-thumb → el "pulgar" que arrastrás
+
+   Solo funciona en Chrome/Edge (webkit).
+   En Firefox se usa scrollbar-color (no lo incluimos
+   para mantener el CSS simple).
+════════════════════════════════════════════════════ */
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: #080808; }
+::-webkit-scrollbar-thumb { background: #900000; border-radius: 2px; }
+
+
+/* ════════════════════════════════════════════════════
+   BARRA DE NAVEGACIÓN
+   Fija arriba, con efecto glass al hacer scroll.
+════════════════════════════════════════════════════ */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  background: rgba(8, 8, 8, 0.85);     /* fondo semi-transparente */
+  backdrop-filter: blur(12px);          /* desenfoque de cristal   */
+  border-bottom: 1px solid #1e1e1e;
+  z-index: 100;
+  transition: background 0.25s ease;
+}
+
+/* Cuando el usuario hace scroll, el navbar se vuelve más opaco */
+#navbar.scrolled {
+  background: rgba(8, 8, 8, 0.97);
+}
+
+/* Logo: ícono + texto "Portafolio-Frontend" */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  color: #e8e8e8;
+  letter-spacing: 0.02em;
+}
+.nav-logo svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+/* Lista de links de sección */
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+.nav-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #888888;
+  transition: color 0.25s ease;
+  position: relative;
+}
+/* Línea animada debajo del link al hover */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: #cc0000;
+  transition: width 0.25s ease;
+}
+.nav-links a:hover,
+.nav-links a.activo         { color: #e8e8e8; }
+.nav-links a:hover::after,
+.nav-links a.activo::after  { width: 100%; }
+
+/* Íconos de redes (GitHub / LinkedIn) */
+.nav-social {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.nav-social a {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: #888888;
+  border-radius: 6px;
+  transition: color 0.25s ease, background 0.25s ease;
+}
+.nav-social a:hover { color: #cc0000; background: #2b0000; }
+.nav-social a svg   { width: 16px; height: 16px; }
+
+/* Botón hamburguesa – solo aparece en móvil */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-burger span {
+  display: block;
+  width: 22px; height: 2px;
+  background: #e8e8e8;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 
-li{
-    text-decoration: none;
+/* ════════════════════════════════════════════════════BOTONES REUTILIZABLES════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+}
+.btn svg { flex-shrink: 0; }
+
+.btn-primario {
+  background: #cc0000;
+  color: #ffffff;
+  border-color: #cc0000;
+}
+.btn-primario:hover {
+  background: #e60000;
+  border-color: #e60000;
+  box-shadow: 0 0 18px #2b0000;
 }
 
-.LogosNav{
-    display: flex;
-        margin-left: 20em;
-        column-gap: 1em;
-
+.btn-contorno {
+  background: transparent;
+  color: #e8e8e8;
+  border-color: #1e1e1e;
+}
+.btn-contorno:hover {
+  border-color: #cc0000;
+  color: #cc0000;
 }
 
-.logoNav{
-    width: 30px;
-    height: 30px;
-    margin-top: 0.5em;
-    padding: 0.2em;
+.btn-icono {
+  background: #151515;
+  color: #888888;
+  border-color: #1e1e1e;
+  padding: 0.5rem 0.65rem;
+}
+.btn-icono:hover { color: #cc0000; border-color: #cc0000; }
+
+/* Botón pequeño para cards de proyectos */
+.btn-sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.72rem;
+  background: #cc0000;
+  color: #ffffff;
+  border-color: #cc0000;
+}
+.btn-sm:hover { background: #e60000; box-shadow: 0 0 12px #2b0000; }
+
+.btn-sm.btn-contorno {
+  background: transparent;
+  color: #888888;
+  border-color: #1e1e1e;
+}
+.btn-sm.btn-contorno:hover { color: #cc0000; border-color: #cc0000; }
+
+
+                                    /* ════════════════════════════════════════════════════HERO / PORTADA════════════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(64px + 3rem) 4rem 4rem;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Destello rojo suave de fondo */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 60%, #1a0000 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Textura de grano sutil */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Contenedor flex: texto izquierda / foto derecha */
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+  max-width: 1100px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Bloque de texto (izquierda) */
+.hero-info { flex: 1; }
+
+/* Etiqueta pequeña tipo "Frontend Developer" */
+.hero-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #cc0000;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hero-tag::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 1.5px;
+  background: #cc0000;
+}
+
+/* Nombre grande */
+.hero-nombre {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: #e8e8e8;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+/* Línea de ubicación */
+.hero-ubicacion {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #888888;
+  margin-bottom: 1.5rem;
+}
+
+/* Grupo de botones de contacto */
+.hero-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* ── FOTO DE PERFIL GRANDE ── */
+.hero-avatar {
+  flex-shrink: 0;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  border: 3px solid #cc0000;
+  box-shadow:
+    0 0 0 12px #1a0000,          /* halo oscuro interno  */
+    0 0 60px 10px #5c0000;       /* glow rojo exterior   */
+  overflow: hidden;
+  position: relative;
+  background: #151515;
+}
+.hero-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* Placeholder con iniciales cuando no hay foto */
+.avatar-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 5rem;
+  font-weight: 700;
+  color: #cc0000;
+  letter-spacing: -2px;
+}
+/* Ocultar placeholder si la imagen cargó */
+.hero-avatar img:not([src=""]) + .avatar-placeholder { display: none; }
+
+/* Indicador de scroll animado (la línea que baja) */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #555555;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 1;
+  animation: aparecerArriba 1.5s ease 1s both;
+}
+.scroll-line {
+  width: 1.5px;
+  height: 32px;
+  background: linear-gradient(to bottom, #cc0000, transparent);
+  animation: pulsarScroll 2s ease infinite;
+}
+
+@keyframes pulsarScroll {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50%       { opacity: 0.4; transform: scaleY(0.6); }
+}
+
+
+/* ════════════════════════════════════════════════════
+   SECCIONES – ESTRUCTURA GENERAL
+   .seccion      → padding vertical + horizontal
+   .seccion-alt  → fondo ligeramente más claro
+   .seccion-interior → ancho máximo centrado
+   .seccion-titulo   → título con línea decorativa
+════════════════════════════════════════════════════ */
+.seccion {
+  padding: 6rem 2.5rem;
+}
+.seccion-alt {
+  background: #0f0f0f;
+}
+.seccion-interior {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Título de sección: texto rojo + línea gris que se extiende */
+.seccion-titulo {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.05rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #cc0000;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.seccion-titulo::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #1e1e1e;
+}
+
+
+/* ════════════════════════════════════════════════════
+   SOBRE MÍ
+════════════════════════════════════════════════════ */
+.sobre-texto {
+  font-size: 1.05rem;
+  color: #888888;
+  max-width: 680px;
+  line-height: 1.9;
+}
+
+
+/* ════════════════════════════════════════════════════
+   TECNOLOGÍAS
+   Chips más grandes con SVG del logo + nombre.
+   Al hacer hover: borde rojo y brillo suave.
+════════════════════════════════════════════════════ */
+.tech-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tech-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.9rem 1.6rem;          /* más grande que antes */
+  background: #151515;
+  border: 1px solid #1e1e1e;
+  border-radius: 999px;
+  cursor: default;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.tech-chip:hover {
+  border-color: #cc0000;
+  box-shadow: 0 0 14px #2b0000;
+  transform: translateY(-2px);
+}
+
+/* SVG del logo de cada tecnología */
+.tech-svg {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+/* Nombre de la tecnología */
+.tech-nombre {
+  color: #e8e8e8;
+  font-size: 0.95rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+
+
+/* ════════════════════════════════════════════════════
+   LÍNEA DE TIEMPO (Formación)
+   Barra vertical izquierda + punto rojo en cada item.
+════════════════════════════════════════════════════ */
+.linea-tiempo {
+  position: relative;
+  padding-left: 2rem;
+}
+.linea-tiempo::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 8px; bottom: 8px;
+  width: 1.5px;
+  background: linear-gradient(to bottom, #cc0000, #1e1e1e);
+}
+
+.tiempo-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+.tiempo-item:last-child { margin-bottom: 0; }
+
+/* Punto circular rojo en la línea */
+.tiempo-punto {
+  position: absolute;
+  left: -2rem; top: 6px;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: #cc0000;
+  border: 2px solid #080808;
+  box-shadow: 0 0 8px #5c0000;
+}
+
+.tiempo-contenido {
+  background: #151515;
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  transition: border-color 0.25s ease;
+}
+.tiempo-contenido:hover { border-color: #900000; }
+
+.tiempo-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tiempo-titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e8e8e8;
+  margin-bottom: 0.2rem;
+}
+.tiempo-sub {
+  font-size: 0.82rem;
+  color: #cc0000;
+  margin-bottom: 0.4rem;
+  font-family: 'Space Mono', monospace;
+}
+.tiempo-desc {
+  font-size: 0.85rem;
+  color: #888888;
+  line-height: 1.6;
+}
+.tiempo-badge {
+  flex-shrink: 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  background: #2b0000;
+  border: 1px solid #900000;
+  border-radius: 999px;
+  color: #cc0000;
+  letter-spacing: 0.05em;
+}
+
+
+/* ════════════════════════════════════════════════════
+   PROYECTOS – Grid de cards
+════════════════════════════════════════════════════ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: #151515;
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+.project-card:hover {
+  border-color: #900000;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px #0d0d0d;
+}
+
+/* Imagen de previsualización */
+.project-img-wrap {
+  position: relative;
+  height: 160px;
+  background: #0f0f0f;
+  overflow: hidden;
+}
+.project-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.project-card:hover .project-img { transform: scale(1.05); }
+
+/* Placeholder con iniciales cuando no hay imagen */
+.project-img-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #900000;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #0f0f0f, #151515);
+}
+.project-img:not([src=""]) + .project-img-placeholder { display: none; }
+
+/* Cuerpo de la card */
+.project-body {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.project-title { font-size: 1rem; font-weight: 600; color: #e8e8e8; }
+.project-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  color: #cc0000;
+  letter-spacing: 0.05em;
+}
+.project-desc { font-size: 0.83rem; color: #888888; flex: 1; line-height: 1.6; }
+
+/* Etiquetas de tecnologías usadas */
+.project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.25rem; }
+.etiqueta {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  padding: 0.15rem 0.55rem;
+  background: #2b0000;
+  border: 1px solid #900000;
+  color: #cc0000;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.project-links { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+
+
+/* ════════════════════════════════════════════════════
+   EXTRA – Grid de certificados / logros
+════════════════════════════════════════════════════ */
+.extra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.extra-card {
+  background: #151515;
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.extra-card:hover { border-color: #900000; transform: translateY(-3px); }
+
+.extra-img-wrap {
+  position: relative;
+  height: 130px;
+  background: #0f0f0f;
+  overflow: hidden;
+}
+.extra-img { width: 100%; height: 100%; object-fit: cover; }
+.extra-img-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  background: linear-gradient(135deg, #0f0f0f, #151515);
+}
+.extra-img:not([src=""]) + .extra-img-placeholder { display: none; }
+
+.extra-cuerpo { padding: 1rem; }
+.extra-titulo { font-size: 0.9rem; font-weight: 600; color: #e8e8e8; margin-bottom: 0.3rem; }
+.extra-desc   { font-size: 0.8rem; color: #888888; line-height: 1.5; }
+
+
+/* ════════════════════════════════════════════════════
+   PIE DE PÁGINA (FOOTER)
+════════════════════════════════════════════════════ */
+.pie {
+  border-top: 1px solid #1e1e1e;
+  padding: 2.5rem;
+  background: #080808;
+}
+.pie-interior {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+.pie-nombre {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+  color: #e8e8e8;
+}
+.pie-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pie-links a {
+  font-size: 0.82rem;
+  color: #888888;
+  transition: color 0.25s ease;
+}
+.pie-links a:hover { color: #cc0000; }
+.pie-copia {
+  font-size: 0.75rem;
+  color: #555555;
+  font-family: 'Space Mono', monospace;
+}
+
+
+/* ════════════════════════════════════════════════════
+   SCROLL REVEAL
+   Los elementos empiezan invisibles (opacity: 0,
+   desplazados hacia abajo). El JS les agrega la clase
+   .visible cuando entran al viewport, disparando
+   la transición CSS que los hace aparecer.
+════════════════════════════════════════════════════ */
+.revelar {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.revelar.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ════════════════════════════════════════════════════
+   RESPONSIVE – MÓVIL (≤768px)
+════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  #navbar { padding: 0 1.25rem; }
+
+  /* Menú desplegable en móvil */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 64px; left: 0; right: 0;
+    background: rgba(8, 8, 8, 0.97);
+    flex-direction: column;
+    gap: 0;
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .nav-links.abierto { display: flex; }
+  .nav-links li a {
+    display: block;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #1e1e1e;
+  }
+
+  .nav-social   { display: none; }
+  .nav-burger   { display: flex; }
+
+  /* Hero en columna: foto encima, texto abajo */
+  .hero-content {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 2rem;
+  }
+  .hero-avatar  { width: 220px; height: 220px; }
+  .hero-tag     { justify-content: center; }
+  .hero-ubicacion { justify-content: center; }
+  .hero-botones { justify-content: center; }
+
+  .seccion { padding: 4rem 1.25rem; }
+
+  .projects-grid { grid-template-columns: 1fr; }
+  .extra-grid    { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+
+  .tiempo-cabecera { flex-direction: column; gap: 0.5rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-nombre  { font-size: 2.2rem; }
+  .hero-avatar  { width: 180px; height: 180px; }
+  .hero-botones { flex-direction: column; align-items: stretch; }
+  .btn          { justify-content: center; }
+}
+
+
+/* ════════════════════════════════════════════════════
+   ANIMACIONES KEYFRAMES
+   fadeInUp → aparece desde abajo (usado en el hero)
+   aparecerArriba → alias para el scroll hint
+════════════════════════════════════════════════════ */
+@keyframes aparecerArriba {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Animación de entrada del bloque principal del hero */
+.hero-content { animation: aparecerArriba 0.8s ease 0.1s both; }
