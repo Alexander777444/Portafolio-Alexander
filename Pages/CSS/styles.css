@@ -49,17 +49,75 @@ html {
 }
 
 body {
-  background: #080808;
-  color: #e8e8e8;
-  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #000000 75%, var(--acento-oscuro) 115%);
+  color: var(--texto);
+  font-family: var(--fuente-sans);
   font-size: 16px;
   line-height: 1.7;
-  overflow-x: hidden; /* evita scroll horizontal */
+  overflow-x: hidden;
 }
 
 img   { max-width: 100%; display: block; }
 a     { color: inherit; text-decoration: none; }
 ul    { list-style: none; }
+
+/* Iconos Font Awesome exportados (Assets/icons/) vía CSS mask + currentColor */
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / contain;
+  mask: no-repeat center / contain;
+}
+.icon--github      { -webkit-mask-image: url(../../Assets/icons/github.svg);      mask-image: url(../../Assets/icons/github.svg); }
+.icon--linkedin    { -webkit-mask-image: url(../../Assets/icons/linkedin.svg);    mask-image: url(../../Assets/icons/linkedin.svg); }
+.icon--envelope    { -webkit-mask-image: url(../../Assets/icons/envelope.svg);    mask-image: url(../../Assets/icons/envelope.svg); }
+.icon--file-pdf    { -webkit-mask-image: url(../../Assets/icons/file-pdf.svg);    mask-image: url(../../Assets/icons/file-pdf.svg); }
+.icon--location    { -webkit-mask-image: url(../../Assets/icons/location-dot.svg); mask-image: url(../../Assets/icons/location-dot.svg); }
+.icon--laptop-code { -webkit-mask-image: url(../../Assets/icons/laptop-code.svg); mask-image: url(../../Assets/icons/laptop-code.svg); }
+.icon--sm  { width: 14px; height: 14px; }
+.icon--md  { width: 16px; height: 16px; }
+.icon--nav { width: 22px; height: 22px; }
+
+/* Accesibilidad: skip link y focus visible */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  background: var(--acento);
+  color: #fff;
+  font-family: var(--fuente-mono);
+  font-size: 0.85rem;
+  border-radius: var(--radio);
+  transition: top var(--transicion);
+}
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid var(--texto);
+  outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .revelar { opacity: 1; transform: none; }
+  .hero-content { animation: none; }
+}
 
 
 /* ════════════════════════════════════════════════════
@@ -74,8 +132,8 @@ ul    { list-style: none; }
    para mantener el CSS simple).
 ════════════════════════════════════════════════════ */
 ::-webkit-scrollbar       { width: 4px; }
-::-webkit-scrollbar-track { background: #080808; }
-::-webkit-scrollbar-thumb { background: #900000; border-radius: 2px; }
+::-webkit-scrollbar-track { background: #000000; }
+::-webkit-scrollbar-thumb { background: var(--acento-oscuro); border-radius: 2px; }
 
 
 /* ════════════════════════════════════════════════════
@@ -90,16 +148,15 @@ ul    { list-style: none; }
   align-items: center;
   justify-content: space-between;
   padding: 0 2.5rem;
-  background: rgba(8, 8, 8, 0.85);     /* fondo semi-transparente */
-  backdrop-filter: blur(12px);          /* desenfoque de cristal   */
-  border-bottom: 1px solid #1e1e1e;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borde);
   z-index: 100;
-  transition: background 0.25s ease;
+  transition: background var(--transicion);
 }
 
-/* Cuando el usuario hace scroll, el navbar se vuelve más opaco */
 #navbar.scrolled {
-  background: rgba(8, 8, 8, 0.97);
+  background: rgba(0, 0, 0, 0.97);
 }
 
 /* Logo: ícono + texto "Portafolio-Frontend" */
@@ -113,6 +170,7 @@ ul    { list-style: none; }
   letter-spacing: 0.02em;
 }
 .nav-logo svg { width: 22px; height: 22px; flex-shrink: 0; }
+.nav-logo .icon--laptop-code { color: var(--acento); }
 
 /* Lista de links de sección */
 .nav-links {
@@ -166,7 +224,11 @@ ul    { list-style: none; }
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
 .nav-burger span {
   display: block;
@@ -406,9 +468,6 @@ ul    { list-style: none; }
 ════════════════════════════════════════════════════ */
 .seccion {
   padding: 6rem 2.5rem;
-}
-.seccion-alt {
-  background: #0f0f0f;
 }
 .seccion-interior {
   max-width: 900px;
@@ -695,9 +754,8 @@ ul    { list-style: none; }
    PIE DE PÁGINA (FOOTER)
 ════════════════════════════════════════════════════ */
 .pie {
-  border-top: 1px solid #1e1e1e;
+  border-top: 1px solid var(--borde);
   padding: 2.5rem;
-  background: #080808;
 }
 .pie-interior {
   max-width: 900px;
@@ -727,8 +785,8 @@ ul    { list-style: none; }
 .pie-links a:hover { color: #cc0000; }
 .pie-copia {
   font-size: 0.75rem;
-  color: #555555;
-  font-family: 'Space Mono', monospace;
+  color: var(--texto);
+  font-family: var(--fuente-mono);
 }
 
 
@@ -761,7 +819,7 @@ ul    { list-style: none; }
     display: none;
     position: absolute;
     top: 64px; left: 0; right: 0;
-    background: rgba(8, 8, 8, 0.97);
+    background: rgba(0, 0, 0, 0.97);
     flex-direction: column;
     gap: 0;
     border-bottom: 1px solid #1e1e1e;
@@ -799,7 +857,9 @@ ul    { list-style: none; }
   .hero-nombre  { font-size: 2.2rem; }
   .hero-avatar  { width: 180px; height: 180px; }
   .hero-botones { flex-direction: column; align-items: stretch; }
-  .btn          { justify-content: center; }
+  .btn          { justify-content: center; min-height: 44px; }
+  .tech-grid    { justify-content: center; }
+  .extra-grid   { grid-template-columns: 1fr; }
 }
 
 
