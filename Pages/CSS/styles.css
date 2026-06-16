@@ -50,7 +50,7 @@ html {
 
 body {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #000000 75%, var(--acento-oscuro) 115%);
+  background: #080808;
   color: var(--texto);
   font-family: var(--fuente-sans);
   font-size: 16px;
