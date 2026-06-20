@@ -1,0 +1,140 @@
+:root {
+  /* Colores de fondo */
+  --fondo: #080808;
+  --fondo-alt: #0f0f0f;
+  --superficie: #151515;
+  --borde: #1e1e1e;
+
+  /* Colores de acento (rojo) */
+  --acento: #cc0000;
+  --acento-oscuro: #900000;
+  --acento-brillo: #2b0000;
+
+  /* Colores de texto */
+  --texto: #e8e8e8;
+  --texto-apagado: #888888;
+  --texto-tenue: #555555;
+
+  /* Tipografías */
+  --fuente-mono: 'Space Mono', monospace;
+  --fuente-sans: 'DM Sans', sans-serif;
+
+  /* Otros */
+  --radio: 10px;
+  --alto-nav: 52px;
+  --transicion: 0.25s ease;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: #080808;
+  color: var(--texto);
+  font-family: var(--fuente-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / contain;
+  mask: no-repeat center / contain;
+}
+
+.icon--github { -webkit-mask-image: url(../../Assets/icons/github.svg); mask-image: url(../../Assets/icons/github.svg); }
+.icon--linkedin { -webkit-mask-image: url(../../Assets/icons/linkedin.svg); mask-image: url(../../Assets/icons/linkedin.svg); }
+.icon--envelope { -webkit-mask-image: url(../../Assets/icons/envelope.svg); mask-image: url(../../Assets/icons/envelope.svg); }
+.icon--file-pdf { -webkit-mask-image: url(../../Assets/icons/file-pdf.svg); mask-image: url(../../Assets/icons/file-pdf.svg); }
+.icon--location { -webkit-mask-image: url(../../Assets/icons/location-dot.svg); mask-image: url(../../Assets/icons/location-dot.svg); }
+.icon--laptop-code { -webkit-mask-image: url(../../Assets/icons/laptop-code.svg); mask-image: url(../../Assets/icons/laptop-code.svg); }
+.icon--sm { width: 14px; height: 14px; }
+.icon--md { width: 16px; height: 16px; }
+.icon--nav { width: 22px; height: 22px; }
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  background: var(--acento);
+  color: #fff;
+  font-family: var(--fuente-mono);
+  font-size: 0.85rem;
+  border-radius: var(--radio);
+  transition: top var(--transicion);
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid var(--texto);
+  outline-offset: 2px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .revelar {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-content {
+    animation: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--acento-oscuro);
+  border-radius: 2px;
+}

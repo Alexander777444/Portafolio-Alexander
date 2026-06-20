@@ -1,0 +1,77 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+}
+
+.btn svg {
+  flex-shrink: 0;
+}
+
+.btn-primario {
+  background: #cc0000;
+  color: #ffffff;
+  border-color: #cc0000;
+}
+
+.btn-primario:hover {
+  background: #e60000;
+  border-color: #e60000;
+  box-shadow: 0 0 18px #2b0000;
+}
+
+.btn-contorno {
+  background: transparent;
+  color: #e8e8e8;
+  border-color: #1e1e1e;
+}
+
+.btn-contorno:hover {
+  border-color: #cc0000;
+  color: #cc0000;
+}
+
+.btn-icono {
+  background: #151515;
+  color: #888888;
+  border-color: #1e1e1e;
+  padding: 0.5rem 0.65rem;
+}
+
+.btn-icono:hover {
+  color: #cc0000;
+  border-color: #cc0000;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.72rem;
+  background: #cc0000;
+  color: #ffffff;
+  border-color: #cc0000;
+}
+
+.btn-sm:hover {
+  background: #e60000;
+  box-shadow: 0 0 12px #2b0000;
+}
+
+.btn-sm.btn-contorno {
+  background: transparent;
+  color: #888888;
+  border-color: #1e1e1e;
+}
+
+.btn-sm.btn-contorno:hover {
+  color: #cc0000;
+  border-color: #cc0000;
+}
