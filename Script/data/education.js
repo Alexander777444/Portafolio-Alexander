@@ -4,7 +4,7 @@ export const education = [
     institution: 'Nombre de la Institución',
     degree: 'Carrera o grado',
     description: 'Descripción opcional.',
-    period: '2020–2024',
+    period: '2020-2024',
   },
   {
     id: 'bootcamp',
