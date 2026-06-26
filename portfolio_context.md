@@ -41,12 +41,14 @@ Este documento refleja el estado real del proyecto tal como está hoy en el repo
 PortafolioProyecto/
 ├── Assets/
 │   ├── icons/
-│   ├── avatarAlexander.jpg
-│   ├── CV_VERSION1.2.pdf
-│   └── monitor-play.png
+│   └── avatarAlexander.jpg
 ├── Pages/
 │   ├── CSS/
-│   │   └── styles.css
+│   │   ├── base.css
+│   │   ├── components.css
+│   │   ├── hero.css
+│   │   ├── navigation.css
+│   │   └── sections.css
 │   └── index.html
 ├── Script/
 │   ├── data/
@@ -61,14 +63,15 @@ PortafolioProyecto/
 │   └── main.js
 ├── docs/
 │   └── screenshots/
-└── README.md
+├── README.md
+└── portfolio_context.md
 ```
 
 ### Qué contiene cada parte
-- **Assets/**: imágenes, iconos SVG, PDF del CV y favicon.
-- **Pages/**: vista principal y estilos.
-- **Script/**: lógica del sitio y datos desacoplados.
-- **docs/**: capturas para documentación.
+- **Assets/**: recursos visuales del proyecto, incluyendo la imagen de avatar y la carpeta de iconos.
+- **Pages/**: la vista principal del portafolio y los estilos organizados en varios archivos CSS por secciones.
+- **Script/**: lógica del sitio, datos desacoplados y módulos JavaScript que manejan renderizado, navegación y animaciones.
+- **docs/**: capturas de pantalla y recursos de documentación.
 
 ---
 
